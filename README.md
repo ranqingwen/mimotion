@@ -1,9 +1,9 @@
 # mimotion
 
-![ 刷步数](https://github.com/TonyJiangWJ/mimotion/actions/workflows/run.yml/badge.svg)
-[![GitHub forks](https://img.shields.io/github/forks/TonyJiangWJ/mimotion?style=flat-square)](https://github.com/TonyJiangWJ/mimotion/forks)
-[![GitHub stars](https://img.shields.io/github/stars/TonyJiangWJ/mimotion?style=flat-square)](https://github.com/TonyJiangWJ/mimotion/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/TonyJiangWJ/mimotion?style=flat-square)](https://github.com/TonyJiangWJ/mimotion/issues)
+![ 刷步数](https://github.com/ranqingwen/mimotion/actions/workflows/run.yml/badge.svg)
+[![GitHub forks](https://img.shields.io/github/forks/ranqingwen/mimotion?style=flat-square)](https://github.com/ranqingwen/mimotion/forks)
+[![GitHub stars](https://img.shields.io/github/stars/ranqingwen/mimotion?style=flat-square)](https://github.com/ranqingwen/mimotion/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/ranqingwen/mimotion?style=flat-square)](https://github.com/ranqingwen/mimotion/issues)
 
 ## 小米运动自动刷步数（支持邮箱登录）
 
