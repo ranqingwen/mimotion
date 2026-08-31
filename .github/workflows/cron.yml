@@ -11,10 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    
+    # 1. 赋予删除工作流记录和写入仓库的权限
+    permissions:
+      actions: write
+      contents: write
+
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PAT }} #此处PAT需要申请，教程详见：README
+          token: ${{ secrets.PAT }}
       - name: random cron
         run: |
           source cron_convert.sh
@@ -26,3 +32,12 @@ jobs:
           current=`TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S'`
           git commit -m "[${current}] random cron trigger by ${{ github.event_name }}"
           git push origin master
+
+      # 2. 清理“刷步数”和“Random Cron”的旧运行记录，各自只保留最近 5 次
+      - name: 清理历史运行记录
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository }}
+          retain_days: 0          # 忽略保留天数
+          keep_minimum_runs: 5    # 各保留最近 5 次
