@@ -6,16 +6,28 @@ on:
 jobs:
   clean-old-runs:
     runs-on: ubuntu-latest
-    timeout-minutes: 120 # 预留 2 小时，足够删除上千条历史记录
+    timeout-minutes: 120
     permissions:
       actions: write
       contents: read
 
     steps:
-      - name: 批量删除超出 6 次的历史记录
+      # 1. 专门清理“刷步数” (run.yml)，只保留最近 10 次
+      - name: 清理 刷步数 历史记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ secrets.PAT }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 6
+          keep_minimum_runs: 10
+          delete_workflow_pattern: "run.yml"
+
+      # 2. 专门清理“Random Cron” (cron.yml)，只保留最近 10 次
+      - name: 清理 Random Cron 历史记录
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 10
+          delete_workflow_pattern: "cron.yml"
