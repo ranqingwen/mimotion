@@ -9,9 +9,11 @@ on:
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 5 # 恢复为较短的超时时间（预留 5 分钟足够日常运行）
+    # 超时时间调整为 30 分钟，防止历史积压记录过多时在删除阶段被强制中断
+    timeout-minutes: 30
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
     
+    # 必须赋予 actions 删除权限
     permissions:
       actions: write
       contents: write
@@ -32,11 +34,22 @@ jobs:
           git commit -m "[${current}] random cron trigger by ${{ github.event_name }}"
           git push origin master
 
-      # 日常增量清理（只清理多出来的 1 次，秒级完成）
-      - name: 清理历史运行记录
+      # 1. 专门清理“刷步数” (run.yml)，保留最近 6 次
+      - name: 清理 刷步数 历史记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ secrets.PAT }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 5
+          keep_minimum_runs: 6
+          delete_workflow_pattern: "run.yml"
+
+      # 2. 专门清理“Random Cron” (cron.yml)，保留最近 6 次
+      - name: 清理 Random Cron 历史记录
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 6
+          delete_workflow_pattern: "cron.yml"
