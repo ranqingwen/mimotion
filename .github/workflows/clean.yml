@@ -1,0 +1,21 @@
+name: 深度清理历史记录
+
+on:
+  workflow_dispatch: # 仅支持手动在 Actions 页面点击运行
+
+jobs:
+  clean-old-runs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120 # 预留 2 小时，足够删除上千条历史记录
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: 批量删除超出 5 次的历史记录
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 5
