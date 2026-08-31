@@ -34,22 +34,22 @@ jobs:
           git commit -m "[${current}] random cron trigger by ${{ github.event_name }}"
           git push origin master
 
-      # 1. 专门清理“刷步数” (run.yml)，保留最近 6 次
+      # 1. 专门清理“刷步数” (run.yml)，保留最近 8 次
       - name: 清理 刷步数 历史记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ secrets.PAT }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 6
+          keep_minimum_runs: 8
           delete_workflow_pattern: "run.yml"
 
-      # 2. 专门清理“Random Cron” (cron.yml)，保留最近 6 次
+      # 2. 专门清理“Random Cron” (cron.yml)，保留最近 8 次
       - name: 清理 Random Cron 历史记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ secrets.PAT }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 6
+          keep_minimum_runs: 8
           delete_workflow_pattern: "cron.yml"
